@@ -1,0 +1,9 @@
+dbt_airflow_integration:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      schema: datawarehouse_dev
+      threads: 8
+      method: oauth
+      project: payfazz-data-development
