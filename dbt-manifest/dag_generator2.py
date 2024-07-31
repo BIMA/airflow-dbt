@@ -75,11 +75,11 @@ with DAG(
 
     end = EmptyOperator(task_id='end')
 
-    (start >>
+    (end <<
     {% for model in models %}
-    {{ model['task_id'] }} >>
+    {{ model['task_id'] }} <<
     {% endfor %}
-    end)
+    start)
 """
 
 

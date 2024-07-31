@@ -88,12 +88,12 @@ with DAG(
 
     end = EmptyOperator(task_id='end')
 
-    (start >>
+    (end <<
     
-    pma_final >>
+    pma_final <<
     
-    pma_features >>
+    pma_features <<
     
-    pre_pma_features >>
+    pre_pma_features <<
     
-    end)
+    start)

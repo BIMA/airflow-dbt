@@ -61,12 +61,12 @@ with DAG(
 
     end = EmptyOperator(task_id='end')
 
-    (start >>
+    (end <<
     
-    fact_sta_topup >>
+    fact_sta_topup <<
     
-    fact_transactions >>
+    fact_transactions <<
     
-    fact_sta_withdrawals >>
+    fact_sta_withdrawals <<
     
-    end)
+    start)
