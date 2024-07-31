@@ -54,6 +54,8 @@ with DAG(
     
     
     for dependency in [{'dag_id': 'dag__internal_pma_features', 'task_id': 'dep__internal_pma_features'}]:
+        if 'internal' in dependency['task_id']:
+            continue
         ExternalTaskSensor(
             task_id='pma_final_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
@@ -65,6 +67,8 @@ with DAG(
     
     
     for dependency in [{'dag_id': 'dag__internal_pre_pma_features', 'task_id': 'dep__internal_pre_pma_features'}]:
+        if 'internal' in dependency['task_id']:
+            continue
         ExternalTaskSensor(
             task_id='pma_features_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
@@ -74,6 +78,17 @@ with DAG(
         ) >> pma_features
     
     
+    
+    for dependency in [{'dag_id': 'dag__external_fact_sta_withdrawals', 'task_id': 'dep__external_fact_sta_withdrawals'}, {'dag_id': 'dag__external_fact_sta_topup', 'task_id': 'dep__external_fact_sta_topup'}]:
+        if 'internal' in dependency['task_id']:
+            continue
+        ExternalTaskSensor(
+            task_id='pre_pma_features_sensor_' + dependency['task_id'],
+            external_dag_id=dependency['dag_id'],
+            external_task_id=dependency['task_id'],
+            timeout=600,
+            dag=dag
+        ) >> pre_pma_features
     
     
 

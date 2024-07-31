@@ -63,6 +63,8 @@ with DAG(
     {% for model in models %}
     {% if model['dependencies'] %}
     for dependency in {{ model['dependencies'] }}:
+        if 'internal' in dependency['task_id']:
+            continue
         ExternalTaskSensor(
             task_id='{{ model['task_id'] }}_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
@@ -85,6 +87,7 @@ with DAG(
 # Read deployment.yml
 with open(DEPLOYMENT_YML_PATH, "r") as file:
     deployment_config = yaml.safe_load(file)
+
 
 class DBTInvoker:
     def __init__(self, model: str, target: str = "prod") -> None:
@@ -162,7 +165,6 @@ class DBTExtractor:
 
 
 def dag_generator():
-
     # Generate DAG files
     for model_group in deployment_config["model_groups"]:
         group_name = model_group["name"]
@@ -186,7 +188,7 @@ def dag_generator():
                             "name": model_name,
                             "dependencies": [
                                 {"dag_id": f"dag__{dep}", "task_id": f"dep__{dep}"}
-                                for dep in dependencies if "internal" in dep
+                                for dep in dependencies
                             ],
                         }
                     )
