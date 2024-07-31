@@ -21,9 +21,9 @@ DEPLOYMENT_YML_PATH = os.path.join(DBT_PROJECT_PATH, "deployment.yml")
 # Template for Airflow DAG
 DAG_TEMPLATE = """
 from airflow import DAG
-from airflow.operators.dummy import DummyOperator
+from airflow.operators.empty import EmptyOperator
 from airflow.operators.latest_only import LatestOnlyOperator
-from airflow.operators.sensors.external_task_sensor import ExternalTaskSensor
+from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
 from datetime import timedelta
@@ -50,7 +50,7 @@ with DAG(
     tags={{ tags }},
 ) as dag:
 
-    start = DummyOperator(task_id='start')
+    start = EmptyOperator(task_id='start')
 
     {% for model in models %}
     {{ model['task_id'] }} = PythonOperator(
@@ -73,7 +73,7 @@ with DAG(
     {% endif %}
     {% endfor %}
 
-    end = DummyOperator(task_id='end')
+    end = EmptyOperator(task_id='end')
 
     start >> {{ models[0]['task_id'] }} >> end
 """
