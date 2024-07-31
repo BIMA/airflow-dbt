@@ -144,7 +144,6 @@ class DBTExtractor:
 
 
 def dag_generator():
-
     # Read deployment.yml
     with open(DEPLOYMENT_YML_PATH, "r") as file:
         deployment_config = yaml.safe_load(file)
