@@ -12,4 +12,4 @@
   )
 }}
 
-SELECT 1 FROM {{ source("sta_datalake", "safecash_agent_network_topups") }}
+SELECT 1 FROM {{ source("sta_datalake", "payment_topups") }}

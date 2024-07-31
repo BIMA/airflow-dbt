@@ -1,0 +1,11 @@
+
+target/
+dbt_packages/
+logs/
+
+# DBT
+package-lock.yml
+
+# Mac
+.DS_Store
+.user.yml

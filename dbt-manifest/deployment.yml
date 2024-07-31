@@ -1,0 +1,12 @@
+# deployment.yml
+model_groups:
+  - name: ds_feature_store
+    schedule: None
+    owner: DS_team
+    tags: ["DS"]
+    description: This is a DS pipeline
+  - name: lkft
+    schedule: None
+    owner: LKFT_team
+    tags: ["lkft-ugm"]
+    description: This is a LKFT pipeline
