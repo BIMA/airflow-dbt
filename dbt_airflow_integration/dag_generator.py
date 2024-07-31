@@ -47,7 +47,11 @@ def main():
     j_env = jinja2.Environment(loader=jinja2.FileSystemLoader("templates"))
     template = j_env.get_template("dag.py")
     for cfg in conf:
-        cfg["nodes"] = {k: v for k, v in model_info.items() if v.get("group_name") == cfg.get("name")}
+        cfg["nodes"] = {
+            k: v
+            for k, v in model_info.items()
+            if v.get("group_name") == cfg.get("name")
+        }
         r = template.render(**cfg)
         with open(f"dbt_dag__{cfg.get('name')}.py", "w") as f:
             f.write(r)

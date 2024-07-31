@@ -1,0 +1,61 @@
+version: 2
+
+sources:
+  - name: sta_datalake
+    database: d291209
+    schema: sta_datalake
+    tables:
+      - name: safecash_withdrawals
+        tags: ["P1"]
+        meta:
+          elementary:
+            timestamp_column: created_at
+        tests:
+          - elementary.volume_anomalies:
+              tags: ["elementary"]
+              time_bucket:
+                period: day
+                count: 1
+              config:
+                severity: warn
+                detection_delay:
+                  period: day
+                  count: 1
+          - elementary.freshness_anomalies:
+              tags: ["elementary"]
+              time_bucket:
+                period: hour
+                count: 24
+              config:
+                severity: warn
+                detection_delay:
+                  period: day
+                  count: 1
+    
+      - name: safecash_agent_network_topups
+        # TODO: replace all freshness below using elementary
+        # TODO: adjust dbt source freshness command in composer
+        meta:
+          elementary:
+            timestamp_column: created_at
+        tests:
+          - elementary.volume_anomalies:
+              tags: ["elementary"]
+              time_bucket:
+                period: day
+                count: 1
+              config:
+                severity: warn
+                detection_delay:
+                  period: day
+                  count: 1
+          - elementary.freshness_anomalies:
+              tags: ["elementary"]
+              time_bucket:
+                period: hour
+                count: 24
+              config:
+                severity: warn
+                detection_delay:
+                  period: day
+                  count: 1

@@ -1,7 +1,7 @@
 dbt_airflow_integration:
-  target: dev
+  target: prod
   outputs:
-    dev:
+    prod:
       type: bigquery
       schema: datawarehouse_dev
       threads: 8
