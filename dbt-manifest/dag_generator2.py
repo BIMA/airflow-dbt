@@ -64,7 +64,7 @@ with DAG(
     {% if model['dependencies'] %}
     for dependency in {{ model['dependencies'] }}:
         ExternalTaskSensor(
-            task_id='{{ model['task_id'] }}_sensor',
+            task_id='{{ model['task_id'] }}_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
             external_task_id=dependency['task_id'],
             timeout=600,
