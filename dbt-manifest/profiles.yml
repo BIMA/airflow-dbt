@@ -3,7 +3,7 @@ dbt_airflow_integration:
   outputs:
     prod:
       type: bigquery
-      schema: datawarehouse_dev
+      schema: test
       threads: 8
       method: oauth
-      project: payfazz-data-development
+      project: my-project

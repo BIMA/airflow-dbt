@@ -1,11 +1,11 @@
 version: 2
 
 sources:
-  - name: sta_datalake
-    database: d291209
-    schema: sta_datalake
+  - name: lkft_datalake
+    database: my-project
+    schema: lkft_datalake
     tables:
-      - name: safecash_withdrawals
+      - name: payment
         tags: ["P1"]
         meta:
           elementary:

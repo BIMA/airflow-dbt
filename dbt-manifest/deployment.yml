@@ -5,8 +5,8 @@ model_groups:
     owner: DS_team
     tags: ["DS"]
     description: This is a DS pipeline
-  - name: fazz_agen
+  - name: lkft
     schedule: None
-    owner: FazzAgen_team
+    owner: LKFT_team
     tags: ["fazz-agen"]
-    description: This is a FA pipeline
+    description: This is a LKFT pipeline
