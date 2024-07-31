@@ -53,8 +53,8 @@ with DAG(
 
     
     
-    for dependency in [{'dag_id': 'dag_dep_pma_features', 'task_id': 'dep_pma_features'}]:
-        if 'pma_final' in dependency['task_id']:
+    for dependency in [{'dag_id': 'dag__model_dbt_airflow_integration_pma_features', 'task_id': 'dep__model_dbt_airflow_integration_pma_features'}]:
+        if 'ds_feature_store' not in dependency['task_id']:
             continue
         ExternalTaskSensor(
             task_id='pma_final_sensor_' + dependency['task_id'],
@@ -66,8 +66,8 @@ with DAG(
     
     
     
-    for dependency in [{'dag_id': 'dag_dep_pre_pma_features', 'task_id': 'dep_pre_pma_features'}]:
-        if 'pma_features' in dependency['task_id']:
+    for dependency in [{'dag_id': 'dag__model_dbt_airflow_integration_pre_pma_features', 'task_id': 'dep__model_dbt_airflow_integration_pre_pma_features'}]:
+        if 'ds_feature_store' not in dependency['task_id']:
             continue
         ExternalTaskSensor(
             task_id='pma_features_sensor_' + dependency['task_id'],
@@ -79,8 +79,8 @@ with DAG(
     
     
     
-    for dependency in [{'dag_id': 'dag_dep_fact_sta_withdrawals', 'task_id': 'dep_fact_sta_withdrawals'}, {'dag_id': 'dag_dep_fact_sta_topup', 'task_id': 'dep_fact_sta_topup'}]:
-        if 'pre_pma_features' in dependency['task_id']:
+    for dependency in [{'dag_id': 'dag__model_dbt_airflow_integration_fact_sta_withdrawals', 'task_id': 'dep__model_dbt_airflow_integration_fact_sta_withdrawals'}, {'dag_id': 'dag__model_dbt_airflow_integration_fact_sta_topup', 'task_id': 'dep__model_dbt_airflow_integration_fact_sta_topup'}]:
+        if 'ds_feature_store' not in dependency['task_id']:
             continue
         ExternalTaskSensor(
             task_id='pre_pma_features_sensor_' + dependency['task_id'],

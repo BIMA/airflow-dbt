@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from collections import defaultdict
@@ -63,7 +64,7 @@ with DAG(
     {% for model in models %}
     {% if model['dependencies'] %}
     for dependency in {{ model['dependencies'] }}:
-        if '{{ model['task_id'] }}' in dependency['task_id']:
+        if '{{ model['group_name'] }}' not in dependency['task_id']:
             continue
         ExternalTaskSensor(
             task_id='{{ model['task_id'] }}_sensor_' + dependency['task_id'],
@@ -142,7 +143,7 @@ class DBTExtractor:
             for dep in v.get("depends_on"):
                 if dep.startswith("model."):
                     dependencies.append(dep)
-        return [f.split(".")[-1] for f in dependencies]
+        return dependencies
 
     def get_downstream_model(self, depth: int = 1):
         metadata = self.dbt.ls(depth=depth).result
@@ -175,8 +176,9 @@ def dag_generator():
                         {
                             "task_id": model_name,
                             "name": model_name,
+                            "group_name": group_name,
                             "dependencies": [
-                                {"dag_id": f"dag_dep_{dep}", "task_id": f"dep_{dep}"}
+                                {"dag_id": f"dag__{dep.replace('.', '_')}", "task_id": f"dep__{dep.replace('.', '_')}"}
                                 for dep in dependencies
                             ],
                         }
