@@ -133,7 +133,7 @@ class DBTExtractor:
                 "schema": info.node.schema,
                 "name": info.node.name,
                 "alias": info.node.alias,
-                "group_name": info.node.path.split("/")[0],
+                "group_name": "/".join(info.node.path.split("/")[:-1]),
                 "depends_on": info.node.depends_on.nodes,
             }
         return self.dataset_info
@@ -144,7 +144,16 @@ class DBTExtractor:
         for _, v in self.dataset_info.items():
             for dep in v.get("depends_on"):
                 if dep.startswith("model."):
-                    dep = v.get("group_name") + "_" + dep.split(".")[-1]
+                    dep = dep.split(".")[-1]
+                    group_name = v.get("group_name")
+
+                    # Check if path exists in the same folder, then mark as internal
+                    # Otherwise, mark as external
+                    model_path = f"models/{group_name}/{dep}.sql"
+                    if os.path.exists(model_path):
+                        dep = "internal_" + dep
+                    else:
+                        dep = "external_" + dep
                     dependencies.append(dep)
         return dependencies
 
@@ -178,7 +187,7 @@ def dag_generator():
                             "name": model_name,
                             "dependencies": [
                                 {"dag_id": f"dag__{dep}", "task_id": f"dep__{dep}"}
-                                for dep in dependencies if group_name in dep
+                                for dep in dependencies if "internal" in dep
                             ],
                         }
                     )
