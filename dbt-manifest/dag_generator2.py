@@ -64,8 +64,6 @@ with DAG(
     {% for model in models %}
     {% if model['dependencies'] %}
     for dependency in {{ model['dependencies'] }}:
-        if '{{ model['group_name'] }}' not in dependency['task_id']:
-            continue
         ExternalTaskSensor(
             task_id='{{ model['task_id'] }}_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
@@ -85,6 +83,9 @@ with DAG(
     start)
 """
 
+# Read deployment.yml
+with open(DEPLOYMENT_YML_PATH, "r") as file:
+    deployment_config = yaml.safe_load(file)
 
 class DBTInvoker:
     def __init__(self, model: str, target: str = "prod") -> None:
@@ -132,6 +133,7 @@ class DBTExtractor:
                 "schema": info.node.schema,
                 "name": info.node.name,
                 "alias": info.node.alias,
+                "group_name": info.node.path,
                 "depends_on": info.node.depends_on.nodes,
             }
         return self.dataset_info
@@ -142,6 +144,7 @@ class DBTExtractor:
         for _, v in self.dataset_info.items():
             for dep in v.get("depends_on"):
                 if dep.startswith("model."):
+                    dep = v.get("group_name") + "_" + dep.split(".")[-1]
                     dependencies.append(dep)
         return dependencies
 
@@ -151,9 +154,6 @@ class DBTExtractor:
 
 
 def dag_generator():
-    # Read deployment.yml
-    with open(DEPLOYMENT_YML_PATH, "r") as file:
-        deployment_config = yaml.safe_load(file)
 
     # Generate DAG files
     for model_group in deployment_config["model_groups"]:
@@ -176,10 +176,9 @@ def dag_generator():
                         {
                             "task_id": model_name,
                             "name": model_name,
-                            "group_name": group_name,
                             "dependencies": [
-                                {"dag_id": f"dag__{dep.replace('.', '_')}", "task_id": f"dep__{dep.replace('.', '_')}"}
-                                for dep in dependencies
+                                {"dag_id": f"dag__{dep}", "task_id": f"dep__{dep}"}
+                                for dep in dependencies if group_name in dep
                             ],
                         }
                     )

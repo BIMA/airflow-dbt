@@ -53,9 +53,7 @@ with DAG(
 
     
     
-    for dependency in [{'dag_id': 'dag__model_dbt_airflow_integration_pma_features', 'task_id': 'dep__model_dbt_airflow_integration_pma_features'}]:
-        if 'ds_feature_store' not in dependency['task_id']:
-            continue
+    for dependency in [{'dag_id': 'dag__ds_feature_store/pma_final.sql_pma_features', 'task_id': 'dep__ds_feature_store/pma_final.sql_pma_features'}]:
         ExternalTaskSensor(
             task_id='pma_final_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
@@ -66,9 +64,7 @@ with DAG(
     
     
     
-    for dependency in [{'dag_id': 'dag__model_dbt_airflow_integration_pre_pma_features', 'task_id': 'dep__model_dbt_airflow_integration_pre_pma_features'}]:
-        if 'ds_feature_store' not in dependency['task_id']:
-            continue
+    for dependency in [{'dag_id': 'dag__ds_feature_store/pma_features.sql_pre_pma_features', 'task_id': 'dep__ds_feature_store/pma_features.sql_pre_pma_features'}]:
         ExternalTaskSensor(
             task_id='pma_features_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
@@ -79,9 +75,7 @@ with DAG(
     
     
     
-    for dependency in [{'dag_id': 'dag__model_dbt_airflow_integration_fact_sta_withdrawals', 'task_id': 'dep__model_dbt_airflow_integration_fact_sta_withdrawals'}, {'dag_id': 'dag__model_dbt_airflow_integration_fact_sta_topup', 'task_id': 'dep__model_dbt_airflow_integration_fact_sta_topup'}]:
-        if 'ds_feature_store' not in dependency['task_id']:
-            continue
+    for dependency in [{'dag_id': 'dag__ds_feature_store/pre_pma_features.sql_fact_sta_withdrawals', 'task_id': 'dep__ds_feature_store/pre_pma_features.sql_fact_sta_withdrawals'}, {'dag_id': 'dag__ds_feature_store/pre_pma_features.sql_fact_sta_topup', 'task_id': 'dep__ds_feature_store/pre_pma_features.sql_fact_sta_topup'}]:
         ExternalTaskSensor(
             task_id='pre_pma_features_sensor_' + dependency['task_id'],
             external_dag_id=dependency['dag_id'],
