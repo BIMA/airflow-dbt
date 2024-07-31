@@ -24,7 +24,7 @@ with DAG(
     'dag_fazz_agen',
     default_args=default_args,
     description='This is a FA pipeline',
-    schedule_interval='None',
+    schedule_interval=None,
     start_date=days_ago(1),
     tags=['fazz-agen'],
 ) as dag:
@@ -61,4 +61,12 @@ with DAG(
 
     end = EmptyOperator(task_id='end')
 
-    start >> fact_sta_topup >> end
+    (start >>
+    
+    fact_sta_topup >>
+    
+    fact_transactions >>
+    
+    fact_sta_withdrawals >>
+    
+    end)

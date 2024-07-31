@@ -45,7 +45,7 @@ with DAG(
     '{{ dag_id }}',
     default_args=default_args,
     description='{{ description }}',
-    schedule_interval='{{ schedule }}',
+    schedule_interval={%- if schedule == "None" -%}None{%- else -%}"{{ schedule }}"{%- endif -%},
     start_date=days_ago(1),
     tags={{ tags }},
 ) as dag:
@@ -75,7 +75,11 @@ with DAG(
 
     end = EmptyOperator(task_id='end')
 
-    start >> {{ models[0]['task_id'] }} >> end
+    (start >>
+    {% for model in models %}
+    {{ model['task_id'] }} >>
+    {% endfor %}
+    end)
 """
 
 

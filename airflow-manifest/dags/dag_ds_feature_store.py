@@ -24,7 +24,7 @@ with DAG(
     'dag_ds_feature_store',
     default_args=default_args,
     description='This is a DS pipeline',
-    schedule_interval='None',
+    schedule_interval=None,
     start_date=days_ago(1),
     tags=['DS'],
 ) as dag:
@@ -88,4 +88,12 @@ with DAG(
 
     end = EmptyOperator(task_id='end')
 
-    start >> pma_final >> end
+    (start >>
+    
+    pma_final >>
+    
+    pma_features >>
+    
+    pre_pma_features >>
+    
+    end)
