@@ -8,5 +8,5 @@ model_groups:
   - name: lkft
     schedule: None
     owner: LKFT_team
-    tags: ["fazz-agen"]
+    tags: ["lkft-ugm"]
     description: This is a LKFT pipeline
