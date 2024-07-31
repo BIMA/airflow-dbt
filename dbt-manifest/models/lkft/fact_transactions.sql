@@ -12,6 +12,6 @@
   )
 }}
 
-SELECT 1 FROM {{ source("sta_datalake", "payment") }}
+SELECT 1 FROM {{ source("lkft_datalake", "payment") }}
 UNION ALL
-SELECT 1 FROM {{ source("sta_datalake", "payment_topups") }}
+SELECT 1 FROM {{ source("lkft_datalake", "payment_topups") }}

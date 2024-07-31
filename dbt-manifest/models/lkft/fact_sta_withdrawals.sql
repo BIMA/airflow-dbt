@@ -12,4 +12,4 @@
   )
 }}
 
-SELECT 1 FROM {{ source("sta_datalake", "payment") }}
+SELECT 1 FROM {{ source("lkft_datalake", "payment") }}
