@@ -63,7 +63,7 @@ with DAG(
     {% for model in models %}
     {% if model['dependencies'] %}
     for dependency in {{ model['dependencies'] }}:
-        if {{ model['task_id'] }} in dependency['task_id']:
+        if '{{ model['task_id'] }}' in dependency['task_id']:
             continue
         ExternalTaskSensor(
             task_id='{{ model['task_id'] }}_sensor_' + dependency['task_id'],
