@@ -1,8 +1,8 @@
 
 from airflow import DAG
-from airflow.operators.dummy import DummyOperator
+from airflow.operators.empty import EmptyOperator
 from airflow.operators.latest_only import LatestOnlyOperator
-from airflow.operators.sensors.external_task_sensor import ExternalTaskSensor
+from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
 from datetime import timedelta
@@ -29,7 +29,7 @@ with DAG(
     tags=['fazz-agen'],
 ) as dag:
 
-    start = DummyOperator(task_id='start')
+    start = EmptyOperator(task_id='start')
 
     
     fact_sta_topup = PythonOperator(
@@ -59,6 +59,6 @@ with DAG(
     
     
 
-    end = DummyOperator(task_id='end')
+    end = EmptyOperator(task_id='end')
 
     start >> fact_sta_topup >> end
