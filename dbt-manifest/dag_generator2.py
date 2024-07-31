@@ -188,7 +188,7 @@ def dag_generator():
             models=models,
         )
 
-        dag_file_path = f"{dag_id}.py"
+        dag_file_path = f"airflow-manifest/dags/{dag_id}.py"
         with open(dag_file_path, "w") as dag_file:
             dag_file.write(dag_content)
 
