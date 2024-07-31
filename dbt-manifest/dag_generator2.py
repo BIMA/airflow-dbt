@@ -133,7 +133,7 @@ class DBTExtractor:
                 "schema": info.node.schema,
                 "name": info.node.name,
                 "alias": info.node.alias,
-                "group_name": info.node.path,
+                "group_name": info.node.path.split("/")[0],
                 "depends_on": info.node.depends_on.nodes,
             }
         return self.dataset_info
