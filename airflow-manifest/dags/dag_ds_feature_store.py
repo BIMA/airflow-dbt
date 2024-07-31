@@ -53,7 +53,7 @@ with DAG(
 
     
     
-    for dependency in [{'dag_id': 'dag_pma_features', 'task_id': 'pma_features'}]:
+    for dependency in [{'dag_id': 'dag_dep_pma_features', 'task_id': 'dep_pma_features'}]:
         ExternalTaskSensor(
             task_id='pma_final_sensor',
             external_dag_id=dependency['dag_id'],
@@ -64,7 +64,7 @@ with DAG(
     
     
     
-    for dependency in [{'dag_id': 'dag_pre_pma_features', 'task_id': 'pre_pma_features'}]:
+    for dependency in [{'dag_id': 'dag_dep_pre_pma_features', 'task_id': 'dep_pre_pma_features'}]:
         ExternalTaskSensor(
             task_id='pma_features_sensor',
             external_dag_id=dependency['dag_id'],
@@ -75,7 +75,7 @@ with DAG(
     
     
     
-    for dependency in [{'dag_id': 'dag_fact_sta_withdrawals', 'task_id': 'fact_sta_withdrawals'}, {'dag_id': 'dag_fact_sta_topup', 'task_id': 'fact_sta_topup'}]:
+    for dependency in [{'dag_id': 'dag_dep_fact_sta_withdrawals', 'task_id': 'dep_fact_sta_withdrawals'}, {'dag_id': 'dag_dep_fact_sta_topup', 'task_id': 'dep_fact_sta_topup'}]:
         ExternalTaskSensor(
             task_id='pre_pma_features_sensor',
             external_dag_id=dependency['dag_id'],

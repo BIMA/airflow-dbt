@@ -170,7 +170,7 @@ def dag_generator():
                             "task_id": model_name,
                             "name": model_name,
                             "dependencies": [
-                                {"dag_id": "dag_" + dep, "task_id": dep}
+                                {"dag_id": f"dag_dep_{dep}", "task_id": f"dep_{dep}"}
                                 for dep in dependencies
                             ],
                         }
